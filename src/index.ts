@@ -1,57 +1,81 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Context, createContext } from "./context";
 
 const typeDefs = `#graphql
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+  type User {
+    id: ID
+    name: String
+    email: String
+    password: String
+  }
 
-  # This "Book" type defines the queryable fields for every book in our data source.
   type Book {
     id: ID
     title: String
-    user: String
+    author: String
   }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
+    users: [User]
     books: [Book]
+  }
+
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
+  type Mutation {
+    signup(email: String!, password: String!, name: String!): AuthPayload    login(email: String!, password: String!): AuthPayload 
   }
 `;
 
-// const books = [
-//   { id: 1, title: "The Awakening", author: "Kate Chopin" },
-//   { id: 2, title: "City of Glass", author: "Paul Auster" },
-// ];
-
-// Resolvers define how to fetch the types defined in your schema.
-// This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    books: async () => {
-      const books = await prisma.book.findMany();
+    users: async (_parent: any, _args: any, context: Context) => {
+      const users = await context.prisma.user.findMany();
+      return users;
+    },
+    books: async (_parent: any, _args: any, context: Context) => {
+      const books = await context.prisma.book.findMany();
       return books;
+    },
+  },
+
+  Mutation: {
+    signup: async (_parent: any, args: SignUpArgs, context: any) => {
+      const { name, email, password } = args;
+      // Your signup logic here
+    },
+    login: async (_parent: any, args: LoginArgs, context: any) => {
+      const { email, password } = args;
+      // Your login logic here
     },
   },
 };
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+interface SignUpArgs {
+  name: string;
+  email: string;
+  password: string;
+}
 
-// Passing an ApolloServer instance to the `startStandaloneServer` function:
-//  1. creates an Express app
-//  2. installs your ApolloServer instance as middleware
-//  3. prepares your app to handle incoming requests
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
-});
+interface LoginArgs {
+  email: string;
+  password: string;
+}
 
-console.log(`🚀 Server ready at: ${url}`);
+const start = async () => {
+  const server = new ApolloServer<Context>({ typeDefs, resolvers });
+
+  const { url } = await startStandaloneServer(server, {
+    context: createContext,
+    listen: { port: 4000 },
+  });
+
+  console.log(`🚀 Server ready at: ${url}`);
+};
+
+start();
