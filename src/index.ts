@@ -1,5 +1,9 @@
+import "dotenv/config";
+
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { Context, createContext } from "./context";
 
@@ -46,12 +50,36 @@ const resolvers = {
 
   Mutation: {
     signup: async (_parent: any, args: SignUpArgs, context: any) => {
-      const { name, email, password } = args;
-      // Your signup logic here
+      const { email, name } = args;
+
+      const password = await bcrypt.hash(args.password, 10);
+
+      const user = await context.prisma.user.create({
+        data: { email, name, password },
+      });
+
+      const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+      return {
+        token,
+        user,
+      };
     },
     login: async (_parent: any, args: LoginArgs, context: any) => {
-      const { email, password } = args;
-      // Your login logic here
+      const user = await context.prisma.user.findUnique({
+        where: { email: args.email },
+      });
+      if (!user) throw new Error("No such user found");
+
+      const valid = await bcrypt.compare(args.password, user.password);
+      if (!valid) throw new Error("Invalid password");
+
+      const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+      return {
+        token,
+        user,
+      };
     },
   },
 };
