@@ -15,7 +15,7 @@ export const BookQuery = extendType({
   definition(t) {
     t.nonNull.list.field("books", {
       type: "Book",
-      resolve(_parent, _args, context) {
+      resolve(_parent, _args, context: Context) {
         return context.prisma.book.findMany();
       },
     });

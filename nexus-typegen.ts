@@ -28,12 +28,23 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  AuthPayload: { // root type
+    token?: string | null; // String
+    user?: NexusGenRootTypes['User'] | null; // User
+  }
   Book: { // root type
     author?: string | null; // String
     id?: string | null; // String
     title?: string | null; // String
   }
+  Mutation: {};
   Query: {};
+  User: { // root type
+    email?: string | null; // String
+    id?: string | null; // String
+    name?: string | null; // String
+    password?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -47,28 +58,69 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  AuthPayload: { // field return type
+    token: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
+  }
   Book: { // field return type
     author: string | null; // String
     id: string | null; // String
     title: string | null; // String
   }
+  Mutation: { // field return type
+    login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+  }
   Query: { // field return type
     books: Array<NexusGenRootTypes['Book'] | null>; // [Book]!
+    users: Array<NexusGenRootTypes['User'] | null>; // [User]!
+  }
+  User: { // field return type
+    email: string | null; // String
+    id: string | null; // String
+    name: string | null; // String
+    password: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  AuthPayload: { // field return type name
+    token: 'String'
+    user: 'User'
+  }
   Book: { // field return type name
     author: 'String'
     id: 'String'
     title: 'String'
   }
+  Mutation: { // field return type name
+    login: 'AuthPayload'
+    signup: 'AuthPayload'
+  }
   Query: { // field return type name
     books: 'Book'
+    users: 'User'
+  }
+  User: { // field return type name
+    email: 'String'
+    id: 'String'
+    name: 'String'
+    password: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    login: { // args
+      email: string; // String!
+      password: string; // String!
+    }
+    signup: { // args
+      email: string; // String!
+      name: string; // String!
+      password: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

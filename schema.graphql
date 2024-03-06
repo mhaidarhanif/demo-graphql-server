@@ -2,12 +2,30 @@
 ### Do not make changes to this file directly
 
 
+type AuthPayload {
+  token: String
+  user: User
+}
+
 type Book {
   author: String
   id: String
   title: String
 }
 
+type Mutation {
+  login(email: String!, password: String!): AuthPayload!
+  signup(email: String!, name: String!, password: String!): AuthPayload!
+}
+
 type Query {
   books: [Book]!
+  users: [User]!
+}
+
+type User {
+  email: String
+  id: String
+  name: String
+  password: String
 }
