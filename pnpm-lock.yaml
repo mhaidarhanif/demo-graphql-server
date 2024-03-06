@@ -23,6 +23,9 @@ dependencies:
   jsonwebtoken:
     specifier: 9.0.2
     version: 9.0.2
+  nexus:
+    specifier: 1.3.0
+    version: 1.3.0(graphql@16.8.1)
 
 devDependencies:
   '@types/bcryptjs':
@@ -1023,6 +1026,10 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
+  /iterall@1.3.0:
+    resolution: {integrity: sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==}
+    dev: false
+
   /jsonwebtoken@9.0.2:
     resolution: {integrity: sha512-PRp66vJ865SSqOlgqS8hujT5U4AOgMfhrwYIuIhfKaoSCZcirrmASQr8CX7cUg+RMih+hgznrjp99o+W4pJLHQ==}
     engines: {node: '>=12', npm: '>=6'}
@@ -1150,6 +1157,16 @@ packages:
   /negotiator@0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /nexus@1.3.0(graphql@16.8.1):
+    resolution: {integrity: sha512-w/s19OiNOs0LrtP7pBmD9/FqJHvZLmCipVRt6v1PM8cRUYIbhEswyNKGHVoC4eHZGPSnD+bOf5A3+gnbt0A5/A==}
+    peerDependencies:
+      graphql: 15.x || 16.x
+    dependencies:
+      graphql: 16.8.1
+      iterall: 1.3.0
+      tslib: 2.6.2
     dev: false
 
   /node-abort-controller@3.1.1:
