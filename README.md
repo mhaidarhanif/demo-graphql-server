@@ -44,3 +44,25 @@ Just the expectation.
 - UI Library: React v18
 - Routing Library: React Router v6
 - Apollo Client for GraphQL in the client-side React
+
+## Development
+
+### Setup environment variables
+
+Copy example `.env` file:
+
+```sh
+cp .env.example .env
+```
+
+Just be careful not to overwrite the existing `.env` that you have.
+
+Set the required values:
+
+```sh
+APP_SECRET="your_secret_value"
+DATABASE_URL="mongodb://user:password@localhost:27017/database
+```
+
+- `APP_SECRET`: for encoding the JWT.
+- `DATABASE_URL`: for connecting to the MongoDB database. Can be using the URI from MongoDB Atlas.
