@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc",
     "start": "pnpm build && node ./dist/index.js",
     "postinstall": "prisma generate"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
