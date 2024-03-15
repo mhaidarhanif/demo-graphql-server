@@ -28,6 +28,8 @@ export const UserQuery = extendType({
     t.nonNull.list.field("users", {
       type: "User",
       resolve(_parent, _args, context: Context) {
+        console.log({ userId: context.userId });
+
         return context.prisma.user.findMany();
       },
     });

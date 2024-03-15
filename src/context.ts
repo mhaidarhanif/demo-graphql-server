@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const APP_SECRET = process.env.APP_SECRET;
 
@@ -25,13 +25,13 @@ export function decodeToken(authorizationString: string): AuthTokenPayload {
 }
 
 export const createContext = async ({ req }) => {
-  const token =
+  const verifiedToken =
     req && req.headers.authorization
       ? decodeToken(req.headers.authorization)
       : null;
 
   return {
     prisma: prisma,
-    userId: token?.userId,
+    userId: verifiedToken?.userId,
   };
 };
