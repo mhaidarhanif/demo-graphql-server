@@ -24,14 +24,14 @@ export function decodeToken(authorizationString: string): AuthTokenPayload {
   return jwt.verify(token, APP_SECRET) as AuthTokenPayload;
 }
 
-export const createContext = async () => {
-  // const token =
-  //   req && req.headers.authorization
-  //     ? decodeAuthHeader(req.headers.authorization)
-  //     : null;
+export const createContext = async ({ req }) => {
+  const token =
+    req && req.headers.authorization
+      ? decodeToken(req.headers.authorization)
+      : null;
 
   return {
     prisma: prisma,
-    // userId: token?.userId,
+    userId: token?.userId,
   };
 };
